@@ -1,0 +1,348 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>How to Construct a Knowledge Graph with an LLM · Local GraphAcademy</title><link rel="stylesheet" href="style.css"></head><body><aside><h2>GraphAcademy<br><small>Local course reader</small></h2><a href="index.html">Course overview</a><h3>Knowledge graphs</h3><a class="" href="lesson-1.html">What is a Knowledge Graph</a><a class="" href="lesson-2.html">Benefits and challenges</a><a class="" href="lesson-3.html">Explore a Knowledge Graph</a><a class="" href="lesson-4.html">Knowledge Graph Use Cases</a><h3>LLM Graph Builder</h3><a class="active" href="lesson-5.html">How to Construct a Knowledge Graph with an LLM</a><a class="" href="lesson-6.html">Neo4j LLM Graph Builder</a><a class="" href="lesson-7.html">Customize the schema</a><a class="" href="lesson-8.html">Complete the Graph</a><h3>Exploring your knowledge graph</h3><a class="" href="lesson-9.html">Explore the Knowledge Graph</a><a class="" href="lesson-10.html">Querying using Cypher</a><a class="" href="lesson-11.html">Create your Knowledge Graph</a><hr><a href="exercises/">Exercise files</a></aside><main><h1>How to Construct a Knowledge Graph with an LLM</h1><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lesson, you will learn the process of constructing a knowledge graph using a Language Model (LLM).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_construction_process">The construction process</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Typically, you would follow these steps to construct a knowledge graph from unstructured text using an LLM:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Gather the data</p>
+</li>
+<li>
+<p>Chunk the data</p>
+</li>
+<li>
+<p><em>Vectorize</em> the data</p>
+</li>
+<li>
+<p>Pass the data to an LLM to extract nodes and relationships</p>
+</li>
+<li>
+<p>Use the output to generate the graph</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_gather_your_data_sources">Gather your data sources</h3>
+<div class="paragraph">
+<p>The first step is to gather your unstructured data.
+The data can be in the form of text documents, PDFs, publicly available data, or any other source of information.</p>
+</div>
+<div class="paragraph">
+<p>Depending on the format, you may need to reformat the data into a format (typically text) that the LLM can process.</p>
+</div>
+<div class="paragraph">
+<p>The data sources should contain the information you want to include in your knowledge graph.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_chunk_the_data">Chunk the data</h3>
+<div class="paragraph">
+<p>The next step is to break down the data into <em>right-sized</em> parts.
+This process is known as <em>chunking</em>.</p>
+</div>
+<div class="paragraph">
+<p>The size of the chunks depends on the LLM you are using, the complexity of the data, and what you want to extract from the data.</p>
+</div>
+<div class="paragraph">
+<p>You may not need to chunk the data if the LLM can process the entire document at once and it fits your requirements.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_vectorize_the_data">Vectorize the data</h3>
+<div class="paragraph">
+<p>Depending on your requirements for querying and searching the data, you may need to create <strong>vector embeddings</strong>.
+You can use any embedding model to create embeddings for each data chunk, but the same model must be used for all embeddings.</p>
+</div>
+<div class="paragraph">
+<p>Placing these vectors into a <a href="https://neo4j.com/docs/cypher-manual/current/indexes/semantic-indexes/vector-indexes/" target="_blank" rel="noopener">Vector index</a> allows you to perform semantic searches, similarity searches, and clustering on the data.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="title">Chunking, Vectors, and Similarity Search</div>
+You can learn more about how to chunk documents, vectors, similarity search, and embeddings in the GraphAcademy course <a href="https://graphacademy.neo4j.com/courses/llm-vectors-unstructured/1-introduction/2-semantic-search/" target="_blank" rel="noopener">Introduction to Vector Indexes and Unstructured Data</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_extract_nodes_and_relationships">Extract nodes and relationships</h3>
+<div class="paragraph">
+<p>The next step is to pass the unstructured text data to the LLM to extract the nodes and relationships.</p>
+</div>
+<div class="paragraph">
+<p>You should provide a suitable prompt that will instruct the LLM to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Identify the entities in the text.</p>
+</li>
+<li>
+<p>Extract the relationships between the entities.</p>
+</li>
+<li>
+<p>Format the output so you can use it to generate the graph, for example, as JSON or another structured format.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Optionally, you may also provide additional context or constraints for the extraction, such as the type of entities or relationships you are interested in extracting.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_generate_the_graph">Generate the graph</h3>
+<div class="paragraph">
+<p>Finally, you can use the output from the LLM to generate the graph by creating the nodes and relationships within Neo4j.</p>
+</div>
+<div class="paragraph">
+<p>The entity and relationship types would become labels and relationship types in the graph.
+The <em>names</em> would be the node and relationship identifiers.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example">Example</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you wanted to construct a knowledge graph based on the <a href="https://en.wikipedia.org/wiki/Neo4j" target="_blank" rel="noopener">Neo4j Wikipedia page</a>, you would:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/2-llm-graph-builder/lessons/1-construction-process/images/neo4j-wiki.png" alt="A screenshot of the Neo4j wiki page">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Gather</strong> the text from the page.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Neo4j is a graph database management system (GDBMS) developed by
+Neo4j Inc.</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>The data elements Neo4j stores are nodes, edges connecting them
+and attributes of nodes and edges. Described by its developers
+as an ACID-compliant transactional database with native graph
+storage and processing...</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Split the text into <strong>chunks</strong>.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Neo4j is a graph database management system (GDBMS) developed
+by Neo4j Inc.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p> </p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>The data elements Neo4j stores are nodes, edges connecting them
+and attributes of nodes and edges.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p> </p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Described by its developers as an ACID-compliant transactional
+database with native graph storage and processing...</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Generate <strong>embeddings</strong> and <strong>vectors</strong> for each chunk.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[0.21972137987, 0.12345678901, 0.98765432109, ...]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p> </p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>[0.34567890123, 0.23456789012, 0.87654321098, ...]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p> </p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>[0.45678901234, 0.34567890123, 0.76543210987, ...]</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Extract</strong> the entities and relationships using an <strong>LLM</strong>.</p>
+<div class="paragraph">
+<p>Send the text to the LLM with an appropriate prompt, for example:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Your task is to identify the entities and relations requested
+with the user prompt from a given text. You must generate the
+output in a JSON format containing a list with JSON objects.</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Text:
+{text}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Parse the entities and relationships output by the LLM.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">[
+    {
+        "text": (
+            "Neo4j is a graph database management system (GDBMS) developed by Neo4j Inc."
+        ),
+        "head": "Neo4j",
+        "head_type": "GraphDatabase",
+        "relation": "DEVELOPED_BY",
+        "tail": "Neo4j Inc",
+        "tail_type": "Company",
+    },
+    {
+        "text": (
+            "Neo4j is implemented in Java"
+        ),
+        "head": "Neo4j",
+        "head_type": "Graph Database",
+        "relation": "IMPLEMENTED_IN",
+        "tail": "Java",
+        "tail_type": "ProgrammingLanguage",
+    },
+    ...
+]</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Generate</strong> the graph.</p>
+<div class="paragraph">
+<p>Use the data to construct the graph in Neo4j by creating nodes and relationships based on the entities and relationships extracted by the LLM.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MERGE (neo4jInc:Company {id: 'Neo4j Inc'})
+MERGE (neo4j:GraphDatabase {id: 'Neo4j'})
+MERGE (java:ProgrammingLanguage {id: 'Java'})
+MERGE (neo4j)-[:DEVELOPED_BY]-&gt;(neo4jInc)
+MERGE (neo4j)-[:IMPLEMENTED_IN]-&gt;(java)</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1 quiz">
+<h2 id="_check_your_understanding">Check your understanding</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1 question">
+<h2 id="_1_knowledge_graph_construction_steps">1. Knowledge graph construction steps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Which of the following steps could be considered <strong>optional</strong>?</p>
+</div>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p>&#10063; Gather your data sources</p>
+</li>
+<li>
+<p>&#10003; Chunk the data</p>
+</li>
+<li>
+<p>&#10003; <em>Vectorize</em> the data</p>
+</li>
+<li>
+<p>&#10063; Pass the data to an LLM to extract nodes and relationships</p>
+</li>
+<li>
+<p>&#10063; Use the output to generate the graph</p>
+</li>
+</ul>
+</div>
+<details><summary>Show hint</summary><table><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="title">Hint</div>
+<div class="paragraph">
+<p>The essential parts of the process are obtaining the data to pass to the LLM and using the output to generate the graph.</p>
+</div>
+</td>
+</tr>
+</table></details>
+<details><summary>Show solution</summary><table><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="title">Solution</div>
+<div class="paragraph">
+<p>The optional steps are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Chunk the data</p>
+</li>
+<li>
+<p><em>Vectorize</em> the data</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>It may not be necessary to chunk the data or vectorize it depending on the LLM you are using, the complexity of the data, and your requirements.</p>
+</div>
+</td>
+</tr>
+</table></details>
+</div>
+</div>
+<div class="sect1 summary">
+<h2 id="_lesson_summary">Lesson Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lesson, you learned about how to construct a knowledge graph.</p>
+</div>
+<div class="paragraph">
+<p>In the next lesson, you will use Neo4j&#8217;s LLM Graph Builder to experiment with the construction process.</p>
+</div>
+</div>
+</div><nav class="pager"><a href="lesson-4.html">← Previous lesson</a><a href="lesson-6.html">Next lesson →</a></nav></main></body></html>

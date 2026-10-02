@@ -1,0 +1,68 @@
+[
+  {
+    "title": "What is a Knowledge Graph",
+    "file": "curriculum/asciidoc/courses/llm-knowledge-graph-construction/modules/1-knowledge-graphs/lessons/1-knowledge-graph/lesson.adoc",
+    "rel": "modules/1-knowledge-graphs/lessons/1-knowledge-graph/lesson.adoc",
+    "name": "lesson-1.html"
+  },
+  {
+    "title": "Benefits and challenges",
+    "file": "curriculum/asciidoc/courses/llm-knowledge-graph-construction/modules/1-knowledge-graphs/lessons/2-benefits-and-challenges/lesson.adoc",
+    "rel": "modules/1-knowledge-graphs/lessons/2-benefits-and-challenges/lesson.adoc",
+    "name": "lesson-2.html"
+  },
+  {
+    "title": "Explore a Knowledge Graph",
+    "file": "curriculum/asciidoc/courses/llm-knowledge-graph-construction/modules/1-knowledge-graphs/lessons/3-explore/lesson.adoc",
+    "rel": "modules/1-knowledge-graphs/lessons/3-explore/lesson.adoc",
+    "name": "lesson-3.html"
+  },
+  {
+    "title": "Knowledge Graph Use Cases",
+    "file": "curriculum/asciidoc/courses/llm-knowledge-graph-construction/modules/1-knowledge-graphs/lessons/4-use-cases/lesson.adoc",
+    "rel": "modules/1-knowledge-graphs/lessons/4-use-cases/lesson.adoc",
+    "name": "lesson-4.html"
+  },
+  {
+    "title": "How to Construct a Knowledge Graph with an LLM",
+    "file": "curriculum/asciidoc/courses/llm-knowledge-graph-construction/modules/2-llm-graph-builder/lessons/1-construction-process/lesson.adoc",
+    "rel": "modules/2-llm-graph-builder/lessons/1-construction-process/lesson.adoc",
+    "name": "lesson-5.html"
+  },
+  {
+    "title": "Neo4j LLM Graph Builder",
+    "file": "curriculum/asciidoc/courses/llm-knowledge-graph-construction/modules/2-llm-graph-builder/lessons/2-LLM-graph-builder/lesson.adoc",
+    "rel": "modules/2-llm-graph-builder/lessons/2-LLM-graph-builder/lesson.adoc",
+    "name": "lesson-6.html"
+  },
+  {
+    "title": "Customize the schema",
+    "file": "curriculum/asciidoc/courses/llm-knowledge-graph-construction/modules/2-llm-graph-builder/lessons/3-schema/lesson.adoc",
+    "rel": "modules/2-llm-graph-builder/lessons/3-schema/lesson.adoc",
+    "name": "lesson-7.html"
+  },
+  {
+    "title": "Complete the Graph",
+    "file": "curriculum/asciidoc/courses/llm-knowledge-graph-construction/modules/2-llm-graph-builder/lessons/4-build-the-graph/lesson.adoc",
+    "rel": "modules/2-llm-graph-builder/lessons/4-build-the-graph/lesson.adoc",
+    "name": "lesson-8.html"
+  },
+  {
+    "title": "Explore the Knowledge Graph",
+    "file": "curriculum/asciidoc/courses/llm-knowledge-graph-construction/modules/3-explore/lessons/1-explore-model/lesson.adoc",
+    "rel": "modules/3-explore/lessons/1-explore-model/lesson.adoc",
+    "name": "lesson-9.html"
+  },
+  {
+    "title": "Querying using Cypher",
+    "file": "curriculum/asciidoc/courses/llm-knowledge-graph-construction/modules/3-explore/lessons/2-query-knowledge-graph/lesson.adoc",
+    "rel": "modules/3-explore/lessons/2-query-knowledge-graph/lesson.adoc",
+    "name": "lesson-10.html"
+  },
+  {
+    "title": "Create your Knowledge Graph",
+    "file": "curriculum/asciidoc/courses/llm-knowledge-graph-construction/modules/3-explore/lessons/3-create-your-graph/lesson.adoc",
+    "rel": "modules/3-explore/lessons/3-create-your-graph/lesson.adoc",
+    "name": "lesson-11.html"
+  }
+]

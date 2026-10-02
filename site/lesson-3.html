@@ -1,0 +1,226 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Explore a Knowledge Graph · Local GraphAcademy</title><link rel="stylesheet" href="style.css"></head><body><aside><h2>GraphAcademy<br><small>Local course reader</small></h2><a href="index.html">Course overview</a><h3>Knowledge graphs</h3><a class="" href="lesson-1.html">What is a Knowledge Graph</a><a class="" href="lesson-2.html">Benefits and challenges</a><a class="active" href="lesson-3.html">Explore a Knowledge Graph</a><a class="" href="lesson-4.html">Knowledge Graph Use Cases</a><h3>LLM Graph Builder</h3><a class="" href="lesson-5.html">How to Construct a Knowledge Graph with an LLM</a><a class="" href="lesson-6.html">Neo4j LLM Graph Builder</a><a class="" href="lesson-7.html">Customize the schema</a><a class="" href="lesson-8.html">Complete the Graph</a><h3>Exploring your knowledge graph</h3><a class="" href="lesson-9.html">Explore the Knowledge Graph</a><a class="" href="lesson-10.html">Querying using Cypher</a><a class="" href="lesson-11.html">Create your Knowledge Graph</a><hr><a href="exercises/">Exercise files</a></aside><main><h1>Explore a Knowledge Graph</h1><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The sandbox contains a prebuilt knowledge graph.</p>
+</div>
+<div class="paragraph">
+<p>The knowledge graph represents just 3 news articles covering the 1976 United States presidential election:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="exercises/./llm-knowledge-graph/data/newswire/pdfs/1976-6.pdf" target="_blank" rel="noopener">1976-6</a>: "Jackson wins Massachusetts Democratic primary."</p>
+</li>
+<li>
+<p><a href="exercises/./llm-knowledge-graph/data/newswire/pdfs/1976-8.pdf" target="_blank" rel="noopener">1976-8</a>: "Carter wins Pennsylvania Democratic primary"</p>
+</li>
+<li>
+<p><a href="exercises/./llm-knowledge-graph/data/newswire/pdfs/1976-22.pdf" target="_blank" rel="noopener">1976-22</a>: "Jimmy Carter wins Presidency"</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="title">Learn more about these news articles</div>
+<div class="paragraph">
+<p>The 3 articles were taken from the <a href="https://huggingface.co/datasets/dell-research-harvard/newswire" target="_blank" rel="noopener">NewsWire dataset</a> that contains 2.7 million unique public domain U.S. news wire articles, written between 1878 and 1977.</p>
+</div>
+<div class="paragraph">
+<p>The dataset was created to provide researchers with a large, high-quality corpus of historical news articles.
+These texts provide a massive repository of information about historical topics and events - and which newspapers were covering them. The dataset will be useful to a wide variety of researchers including historians, other social scientists, and NLP practitioners.</p>
+</div>
+<div class="paragraph">
+<p>You can view the <a href="exercises/./llm-knowledge-graph/data/newswire/extract_articles.py" target="_blank" rel="noopener">Python code which extracted these articles from the dataset</a> in the <a href="exercises/" target="_blank" rel="noopener"><code>llm-knowledge-graph-construction</code> repository</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The knowledge graph maps the relationships between the following entity types referred to in the articles:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Person</code></p>
+</li>
+<li>
+<p><code>Location</code></p>
+</li>
+<li>
+<p><code>Organization</code></p>
+</li>
+<li>
+<p><code>Building</code></p>
+</li>
+<li>
+<p><code>Political party</code></p>
+</li>
+<li>
+<p><code>State</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Run this Cypher to reveal how the entities from the articles are related to each other:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH p=(a:Article)-[:HAS_ENTITY]-&gt;(e)-[r]-()
+RETURN p</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/1-knowledge-graphs/lessons/3-explore/images/article-entities-graph.svg" alt="A graph showing the entities the graph">
+</div>
+</div>
+<div class="paragraph">
+<p>You can see that all 3 articles are connected within the graph through the <code>Person</code> entity <strong>Jimmy Carter</strong>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="title">Node colors and captions</div>
+<div class="paragraph">
+<p>You can set the color of nodes and the text displayed by clicking on the node label, selecting a color and a property to use as the caption.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="content/modules/1-knowledge-graphs/lessons/3-explore/images/node-color-caption-annotated.png" alt="Screenshot of the node color and caption settings" width="200">
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The relationships within knowledge graphs allow you to explore how entities are connected and related to each other.</p>
+</div>
+<div class="paragraph">
+<p>For example, how was <strong>Jimmy Carter</strong> connected to other <code>Person</code> entities:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (p:Person {id:"Jimmy Carter"})-[r]-(p2:Person)
+RETURN p, r, p2</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/1-knowledge-graphs/lessons/3-explore/images/jimmy-carter-person-graph.svg" alt="A graph showing how jimmy carter is connected to other people">
+</div>
+</div>
+<div class="paragraph">
+<p>You can use the nodes and relationships to understand how different entities are related, for example, <code>Person</code> and <code>State</code> entities:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (p:Person)-[r]-(s:State)
+RETURN p, r, s</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following query will show you how the entities of a specific article are connected in the knowledge graph:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (a:Article {id:"1976-8"})-[:HAS_ENTITY]-&gt;(e)
+
+MATCH (e)-[r]-(e2)
+WHERE (a)-[:HAS_ENTITY]-&gt;(e2)
+
+RETURN e, r, e2</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Restricting the entities to only those from a specific article will give you a structured data view of that article.</p>
+</div>
+<div class="paragraph">
+<p>Take some time to explore the knowledge graph and see how the entities are connected.
+Clicking on a node will display its properties.
+You can double-click on a node or click to focus on a node, then click the graph icon to expand its relationships.</p>
+</div>
+</div>
+</div>
+<div class="sect1 quiz">
+<h2 id="_check_your_understanding">Check your understanding</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1 question">
+<h2 id="_the_challenger_to_jimmy_carter">The Challenger to Jimmy Carter</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using the relationships in the knowledge graph determine who was the challenger to <span class="copy">Jimmy Carter</span>?</p>
+</div>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p>&#10063; Sen Henry M. Jackson</p>
+</li>
+<li>
+<p>&#10063; Rep Morris K Udall</p>
+</li>
+<li>
+<p>&#10003; Gerald Ford</p>
+</li>
+<li>
+<p>&#10063; Walter F. Mondale</p>
+</li>
+</ul>
+</div>
+<details><summary>Show hint</summary><table><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="title">Hint</div>
+<div class="paragraph">
+<p>The answer is the <code>id</code> property on the <code>(:Person)</code> node at the end of the <code>CHALLENGER</code> relationship from Jimmy Carter.</p>
+</div>
+</td>
+</tr>
+</table></details>
+<details><summary>Show solution</summary><table><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="title">Solution</div>
+<div class="paragraph">
+<p>The answer is <strong>Gerald Ford</strong>.
+You can find the answer by executing the following Cypher statement:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (p:Person)-[r]-(:Person {id:"Jimmy Carter"})
+RETURN p.id AS Person, type(r) AS Relationship</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table></details>
+</div>
+</div>
+<div class="sect1 summary">
+<h2 id="_summary">Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lesson, you explored a pre-built knowledge graph in Neo4j.</p>
+</div>
+<div class="paragraph">
+<p>In the next lesson, you will learn more about typical use cases for a knowledge graph.</p>
+</div>
+</div>
+</div><nav class="pager"><a href="lesson-2.html">← Previous lesson</a><a href="lesson-4.html">Next lesson →</a></nav></main></body></html>

@@ -1,0 +1,258 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Neo4j LLM Graph Builder · Local GraphAcademy</title><link rel="stylesheet" href="style.css"></head><body><aside><h2>GraphAcademy<br><small>Local course reader</small></h2><a href="index.html">Course overview</a><h3>Knowledge graphs</h3><a class="" href="lesson-1.html">What is a Knowledge Graph</a><a class="" href="lesson-2.html">Benefits and challenges</a><a class="" href="lesson-3.html">Explore a Knowledge Graph</a><a class="" href="lesson-4.html">Knowledge Graph Use Cases</a><h3>LLM Graph Builder</h3><a class="" href="lesson-5.html">How to Construct a Knowledge Graph with an LLM</a><a class="active" href="lesson-6.html">Neo4j LLM Graph Builder</a><a class="" href="lesson-7.html">Customize the schema</a><a class="" href="lesson-8.html">Complete the Graph</a><h3>Exploring your knowledge graph</h3><a class="" href="lesson-9.html">Explore the Knowledge Graph</a><a class="" href="lesson-10.html">Querying using Cypher</a><a class="" href="lesson-11.html">Create your Knowledge Graph</a><hr><a href="exercises/">Exercise files</a></aside><main><h1>Neo4j LLM Graph Builder</h1><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lesson, you will use the LLM Graph Builder to construct a simple knowledge graph.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_llm_graph_builder">LLM Graph Builder</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="https://llm-graph-builder.neo4jlabs.com/" target="_blank" rel="noopener">Neo4j LLM Graph Builder</a> is a tool for turning unstructured data into a knowledge graph.
+It automates the same process described in the previous lesson and builds graphs from text.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/2-llm-graph-builder/lessons/2-LLM-graph-builder/images/llm-graph-builder.png" alt="A screenshot of the LLM Graph Builder">
+</div>
+</div>
+<div class="paragraph">
+<p>The LLM Graph Builder includes a chat interface to interact with the graph and explore the data.
+The chatbot can use different <strong>Retrieval Augmented Generation</strong> (RAG) approaches to answer questions, including <strong>GraphRAG</strong>, <strong>Vector Search</strong>, and <strong>Text2Cypher</strong>.</p>
+</div>
+<div class="paragraph">
+<p>You can upload text-based documents and import text directly from Wikipedia and YouTube.</p>
+</div>
+<div class="paragraph">
+<p>The LLM Graph Builder allows you to configure the LLM model, the types of entities and relationships, and a pre-defined schema.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="title">Neo4j Labs project</div>
+The Neo4j LLM Graph Builder is a <a href="https://neo4j.com/labs/" target="_blank" rel="noopener">Neo4j Labs</a> project is under active development, and features may change.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can learn more in the <a href="https://neo4j.com/labs/genai-ecosystem/llm-graph-builder/" target="_blank" rel="noopener">Neo4j LLM Graph Builder documentation</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_a_knowledge_graph">Create a Knowledge Graph</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You will use the LLM Graph Builder to create a knowledge graph of the GraphAcademy course content.
+You can then ask questions about the course content and explore the relationships between the different topics.</p>
+</div>
+<div class="paragraph">
+<p>To complete this task, you will need to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Connect the LLM Graph Builder to a Neo4j database</p>
+</li>
+<li>
+<p>Upload the course content</p>
+</li>
+<li>
+<p>Generate the knowledge graph</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_connect_to_neo4j">Connect to Neo4j</h3>
+<div class="paragraph">
+<p>When you open the <a href="https://llm-graph-builder.neo4jlabs.com/" target="_blank" rel="noopener">Neo4j LLM Graph Builder</a>, you will be prompted to <em>Connect to Neo4j</em>.
+The LLM Graph Builder will create your knowledge graph in this database.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/2-llm-graph-builder/lessons/2-LLM-graph-builder/images/connect-annotated.png" alt="A screenshot of the LLM Graph Builder connection screen">
+</div>
+</div>
+<div class="paragraph">
+<p>kgbuilder::Open Knowledge Graph Builder[]</p>
+</div>
+<div class="paragraph">
+<p>You can use the Neo4j Sandbox that was created for you when you enrolled in the course:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Protocol</dt>
+<dd>
+<p><span class="copy">neo4j+s</span></p>
+</dd>
+<dt class="hdlist1">URI</dt>
+<dd>
+<p><span class="copy">YOUR_NEO4J_HOST:7687</span></p>
+</dd>
+<dt class="hdlist1">Database</dt>
+<dd>
+<p><span class="copy">neo4j</span></p>
+</dd>
+<dt class="hdlist1">Username</dt>
+<dd>
+<p><span class="copy">neo4j</span></p>
+</dd>
+<dt class="hdlist1">Password</dt>
+<dd>
+<p><span class="copy">YOUR_PASSWORD</span></p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Ensure you have the correct connection details and connect.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_upload_the_course_content">Upload the course content</h3>
+<div class="paragraph">
+<p>You will use the lessons from the <a href="https://graphacademy.neo4j.com/course/genai-fundamentals" target="_blank" rel="noopener">Neo4j &amp; Generative AI Fundamentals</a> course.
+We have converted the lessons into PDF documents so you can upload them.</p>
+</div>
+<div class="paragraph">
+<p>Download the <a href="exercises/./llm-knowledge-graph/data/course/pdfs/genai-fundamentals_1-generative-ai_1-what-is-genai.pdf" target="_blank" rel="noopener">PDF file for lesson 1</a> - What is Generative AI.</p>
+</div>
+<div class="paragraph">
+<p>Use <strong>Upload files</strong> to upload the PDF file to the LLM Graph Builder.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/2-llm-graph-builder/lessons/2-LLM-graph-builder/images/upload-annotated.png" alt="the LLM Graph Builder upload screen">
+</div>
+</div>
+<div class="paragraph">
+<p>The file will uploaded and added to the list of documents.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/2-llm-graph-builder/lessons/2-LLM-graph-builder/images/uploaded.png" alt="The uploaded document in the documents list">
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="title">Uploading multiple documents</div>
+You can upload multiple documents to the LLM Graph Builder to be processed together.
+When creating a knowledge graph, uploading a single document to test the process is often helpful.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Once you have uploaded the document, you can create the knowledge graph using the <strong>Generate Graph</strong> button.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/2-llm-graph-builder/lessons/2-LLM-graph-builder/images/generate-annotated.png" alt="The generate graph button highlighted">
+</div>
+</div>
+<div class="paragraph">
+<p>When generating the graph, the LLM Graph Builder runs the steps described in the previous lesson.
+The application chunks the data, creates vectors, extracts the nodes and relationships, and creates the graph.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/2-llm-graph-builder/lessons/2-LLM-graph-builder/images/processing-annotated.png" alt="The file status shows 'processing'">
+</div>
+</div>
+<div class="paragraph">
+<p>Once the document has completed processing, the knowledge graph will be available for exploration.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/2-llm-graph-builder/lessons/2-LLM-graph-builder/images/completed-annotated.png" alt="The files status shows 'completed'">
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="title">Preview</div>
+<div class="paragraph">
+<p>You can preview the graph for a single document by selecting the document and clicking the <strong>Preview Graph</strong> button.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/2-llm-graph-builder/lessons/2-LLM-graph-builder/images/preview-annotated.png" alt="The file is selected and Preview Graph button highlighted">
+</div>
+</div>
+<div class="paragraph">
+<p>The preview shows the nodes and relationships extracted from the document.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/2-llm-graph-builder/lessons/2-LLM-graph-builder/images/graph-preview.png" alt="A preview of the knowledge graph showing the graph data model with the document and associated entity nodes and relationships">
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_query_the_knowledge_graph">Query the Knowledge Graph</h3>
+<div class="paragraph">
+<p>You can use the built-in chatbot to ask questions about the document&#8217;s content.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="exercises/./llm-knowledge-graph/data/course/pdfs/genai-fundamentals_1-generative-ai_1-what-is-genai.pdf" target="_blank" rel="noopener">PDF file for lesson 1</a> contains information about Generative AI, try asking _.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/2-llm-graph-builder/lessons/2-LLM-graph-builder/images/chatbot-annotated.png" alt="Asking the chatbot about Knowledge Graphs and getting a response">
+</div>
+</div>
+<div class="paragraph">
+<p>The chatbot will use the knowledge graph to find the answer.</p>
+</div>
+<div class="paragraph">
+<p>You can see the context used to answer the question in the <strong>Details</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/2-llm-graph-builder/lessons/2-LLM-graph-builder/images/retrieval-information.png" alt="The retrieval information for the chatbot response">
+</div>
+</div>
+<div class="paragraph">
+<p>The retrieval information shows the sources, chunks, entities and evaluation used to answer the question.</p>
+</div>
+<div class="paragraph">
+<p>Review the <a href="exercises/./llm-knowledge-graph/data/course/pdfs/genai-fundamentals_1-generative-ai_1-what-is-genai.pdf" target="_blank" rel="noopener">lesson content</a>, experiment by asking other questions, review the response, and explore the retrieval information.</p>
+</div>
+<div class="paragraph">
+<p>When you are ready, move on to the next lesson.</p>
+</div>
+<div class="paragraph">
+<p>read::Continue[]</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 summary">
+<h2 id="_summary">Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lesson, you learned how to create a knowledge graph using the Neo4j LLM Graph Builder.</p>
+</div>
+<div class="paragraph">
+<p>In the next lesson, you will explore and customize the schema.</p>
+</div>
+</div>
+</div><nav class="pager"><a href="lesson-5.html">← Previous lesson</a><a href="lesson-7.html">Next lesson →</a></nav></main></body></html>

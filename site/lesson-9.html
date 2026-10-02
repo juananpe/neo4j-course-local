@@ -1,0 +1,194 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Explore the Knowledge Graph · Local GraphAcademy</title><link rel="stylesheet" href="style.css"></head><body><aside><h2>GraphAcademy<br><small>Local course reader</small></h2><a href="index.html">Course overview</a><h3>Knowledge graphs</h3><a class="" href="lesson-1.html">What is a Knowledge Graph</a><a class="" href="lesson-2.html">Benefits and challenges</a><a class="" href="lesson-3.html">Explore a Knowledge Graph</a><a class="" href="lesson-4.html">Knowledge Graph Use Cases</a><h3>LLM Graph Builder</h3><a class="" href="lesson-5.html">How to Construct a Knowledge Graph with an LLM</a><a class="" href="lesson-6.html">Neo4j LLM Graph Builder</a><a class="" href="lesson-7.html">Customize the schema</a><a class="" href="lesson-8.html">Complete the Graph</a><h3>Exploring your knowledge graph</h3><a class="active" href="lesson-9.html">Explore the Knowledge Graph</a><a class="" href="lesson-10.html">Querying using Cypher</a><a class="" href="lesson-11.html">Create your Knowledge Graph</a><hr><a href="exercises/">Exercise files</a></aside><main><h1>Explore the Knowledge Graph</h1><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lesson, you will explore the knowledge graph created by the LLM Graph Builder.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_model">Model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The structure created by the LLM Graph Builder is a good template for a knowledge graph that you can use in your projects.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/3-explore/lessons/1-explore-model/images/graph-builder-model.svg" alt="A graph data model showing Document" width="Chunk and Entity nodes">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Each <code>Document</code> node represents a document or text source uploaded to the LLM Graph Builder.</p>
+</li>
+<li>
+<p>The <code>Document</code> is split into <code>Chunk</code> nodes, identified by <code>FIRST_CHUNK</code> and <code>PART_OF</code> relationships.</p>
+</li>
+<li>
+<p>The LLM processes the chunks and <code>Entity</code> nodes extracted. The graph connects the <code>Entity</code> nodes to the <code>Chunk</code> nodes using the <code>HAS_ENTITY</code> relationship.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The LLM may also extract relationships between the entities, and the graph will hold relationships between the <code>Entity</code> nodes.</p>
+</div>
+<div class="paragraph">
+<p>This model allows you to relate the entities within the knowledge graph to the source documents they refer to.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_explore">Explore</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Review this Cypher query before running it. What do you expect to see?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (d:Document
+    {fileName:'genai-fundamentals_1-generative-ai_1-what-is-genai.pdf'}
+    )
+MATCH (d)&lt;-[:PART_OF]-(c:Chunk)-[:HAS_ENTITY]-&gt;(e)
+RETURN e</code></pre>
+</div>
+</div>
+<details>
+<summary class="title">Click here to reveal the result</summary>
+<div class="content">
+<div class="paragraph">
+<p>Running this query will return all the entities extracted from the document <code>genai-fundamentals_1-generative-ai_1-what-is-genai.pdf</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/3-explore/lessons/1-explore-model/images/entities.svg" alt="A graph created from the lesson text">
+</div>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p>You can modify the query to return the label and ID of the entities.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (d:Document
+    {fileName: 'genai-fundamentals_1-generative-ai_1-what-is-genai.pdf'}
+    )
+MATCH (d)&lt;-[:PART_OF]-(c:Chunk)-[:HAS_ENTITY]-&gt;(e)
+RETURN labels(e) as labels, e.id as entity</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The results provide detail of the entities extracted from the document.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">labels</th>
+<th class="tableblock halign-left valign-top">entity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>["Capability"]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"content creation"</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>["Technology", "Concept"]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"Generative A"</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>["Technology"]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"GPT"</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>["Risk"]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"lack of understanding"</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>&#8230;&#8203;</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The <code><em>Entity</em></code> node label is a generic label applied to all entities to manage indexing and querying.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="title">LLM variability</div>
+The results will vary; an LLM extracted the data, and the results have inherent variability.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>By matching a path from the document to the entities, you can see how the entities relate to the document.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (d:Document
+    {fileName:'genai-fundamentals_1-generative-ai_1-what-is-genai.pdf'}
+    )
+MATCH p = (d)-[*0..3]-(e)
+RETURN p</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="title">Adjusting path depth</div>
+The <code>[*0..3]</code> pattern matches paths of up to three relationships between the document and the entities.
+Increasing the number will return more complex paths, but the query will take longer.
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/3-explore/lessons/1-explore-model/images/lesson1-graph.svg" alt="A graph created from the lesson text">
+</div>
+</div>
+<div class="paragraph">
+<p>You can see what documents contain a specific entity.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (e:Concept {id: "GraphRAG"})&lt;-[:HAS_ENTITY]-(c:Chunk)-[:PART_OF]-&gt;(d:Document)
+RETURN DISTINCT d.fileName</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Take some time to experiment with the data in your knowledge graph.</p>
+</div>
+<div class="paragraph">
+<p>When ready, continue to the next lesson to learn to query a knowledge graph.</p>
+</div>
+<div class="paragraph">
+<p>read::Continue[]</p>
+</div>
+</div>
+</div>
+<div class="sect1 summary">
+<h2 id="_summary">Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lesson, you explored the knowledge graph&#8217;s data model and entities.</p>
+</div>
+<div class="paragraph">
+<p>In the next lesson, you will learn how to techniques for querying knowledge graphs using Cypher.</p>
+</div>
+</div>
+</div><nav class="pager"><a href="lesson-8.html">← Previous lesson</a><a href="lesson-10.html">Next lesson →</a></nav></main></body></html>

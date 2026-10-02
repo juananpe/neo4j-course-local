@@ -1,0 +1,77 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Complete the Graph · Local GraphAcademy</title><link rel="stylesheet" href="style.css"></head><body><aside><h2>GraphAcademy<br><small>Local course reader</small></h2><a href="index.html">Course overview</a><h3>Knowledge graphs</h3><a class="" href="lesson-1.html">What is a Knowledge Graph</a><a class="" href="lesson-2.html">Benefits and challenges</a><a class="" href="lesson-3.html">Explore a Knowledge Graph</a><a class="" href="lesson-4.html">Knowledge Graph Use Cases</a><h3>LLM Graph Builder</h3><a class="" href="lesson-5.html">How to Construct a Knowledge Graph with an LLM</a><a class="" href="lesson-6.html">Neo4j LLM Graph Builder</a><a class="" href="lesson-7.html">Customize the schema</a><a class="active" href="lesson-8.html">Complete the Graph</a><h3>Exploring your knowledge graph</h3><a class="" href="lesson-9.html">Explore the Knowledge Graph</a><a class="" href="lesson-10.html">Querying using Cypher</a><a class="" href="lesson-11.html">Create your Knowledge Graph</a><hr><a href="exercises/">Exercise files</a></aside><main><h1>Complete the Graph</h1><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Currently, the graph is built from a single document.</p>
+</div>
+<div class="paragraph">
+<p>In this challenge, you will upload the complete set of course documents and build the knowledge graph.</p>
+</div>
+<div class="paragraph">
+<p>You will need to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="exercises/./llm-knowledge-graph/data/course/pdfs/genai-fundamentals.zip">Download the generative-ai.zip</a> file that contains all the lessons from the <strong>Neo4j and Generative AI</strong> course.</p>
+</li>
+<li>
+<p>Unzip the file.</p>
+</li>
+<li>
+<p>Upload the <code>genai-fundamentals_*.pdf</code> files to the LLM Graph Builder.</p>
+<div class="imageblock">
+<div class="content">
+<img src="content/modules/2-llm-graph-builder/lessons/4-build-the-graph/images/upload-documents.png" alt="All the documents uploaded to the LLM Graph Builder">
+</div>
+</div>
+</li>
+<li>
+<p>Generate the knowledge graph.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You can use this Cypher query to view all the documents in the graph:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (d:Document)
+RETURN d.fileName AS Document, d.createdAt
+ORDER BY d.createdAt</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Explore the graph and use the chatbot to ask questions about the course content, for example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>What are knowledge graphs?</em></p>
+</li>
+<li>
+<p><em>Summarise strategies for reducing hallucination?</em></p>
+</li>
+<li>
+<p><em>What are the features of the neo4j_graphrag Python package?</em></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When you have completed the challenge, move on to the next lesson.</p>
+</div>
+<div class="paragraph">
+<p>read::Move On[]</p>
+</div>
+</div>
+</div>
+<div class="sect1 summary">
+<h2 id="_lesson_summary">Lesson Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lesson, you uploaded multiple documents and built a knowledge graph.</p>
+</div>
+<div class="paragraph">
+<p>In the next module, you will explore the data model, and learn how to query the knowledge graph using Cypher.</p>
+</div>
+</div>
+</div><nav class="pager"><a href="lesson-7.html">← Previous lesson</a><a href="lesson-9.html">Next lesson →</a></nav></main></body></html>
