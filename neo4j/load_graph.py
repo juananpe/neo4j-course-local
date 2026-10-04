@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Import the exact course graph with parameterized Cypher; safe to rerun."""
-import base64,json,time,urllib.request,urllib.error
+import base64,http.client,json,time,urllib.request,urllib.error
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent
 password=dict(line.split('=',1) for line in (ROOT/'.env').read_text().splitlines() if '=' in line)['NEO4J_PASSWORD']
@@ -13,9 +13,12 @@ def query(statements):
  return result['results']
 def stmt(s,**p):return {'statement':s,'parameters':p}
 def ident(s):return '`'+s.replace('`','``')+'`'
+# A freshly created Neo4j accepts TCP then drops the connection (HTTP 000 /
+# RemoteDisconnected) while it initialises, so treat any transport-level error as
+# "not ready yet" and retry rather than aborting on the first attempt.
 for attempt in range(60):
  try:query([stmt('RETURN 1')]);break
- except (urllib.error.URLError,RuntimeError,TimeoutError):time.sleep(2)
+ except (urllib.error.URLError,http.client.HTTPException,OSError,ValueError,RuntimeError,TimeoutError):time.sleep(2)
 else:raise RuntimeError('Neo4j did not become ready within 120 seconds')
 labels=sorted({l for r in records if r['type']=='node' for l in r['labels']})
 query([stmt(f'CREATE CONSTRAINT {ident("course_"+str(i))} IF NOT EXISTS FOR (n:{ident(label)}) REQUIRE n.neo4jImportId IS UNIQUE') for i,label in enumerate(labels)])
@@ -29,9 +32,14 @@ for r in records:
   a=ident(r['start']['labels'][0]);b=ident(r['end']['labels'][0]);rel=ident(r['label'])
   statements.append(stmt(f'MATCH (a:{a} {{neo4jImportId:$start}}), (b:{b} {{neo4jImportId:$end}}) MERGE (a)-[r:{rel} {{neo4jImportId:$key}}]->(b) SET r += $props',start=r['start']['id'],end=r['end']['id'],key=r['id'],props=r.get('properties',{})))
 query(statements)
-results=query([stmt('MATCH (n) RETURN count(n)'),stmt('MATCH ()-[r]->() RETURN count(r)'),stmt('MATCH (a:Article) RETURN a.id ORDER BY a.id'),stmt('MATCH (a:Article)-[:HAS_ENTITY]->(:Person {id:"Jimmy Carter"}) RETURN a.id ORDER BY a.id')])
+# Verify only the subgraph imported from the course JSON. The Docker volume is
+# shared with the course exercises, which add their own Document/Chunk/__Entity__
+# nodes, so unscoped `MATCH (n)` counts are not a valid integrity check.
+results=query([stmt('MATCH (n) WHERE n.neo4jImportId IS NOT NULL RETURN count(n)'),stmt('MATCH ()-[r]->() WHERE r.neo4jImportId IS NOT NULL RETURN count(r)'),stmt('MATCH (a:Article) WHERE a.neo4jImportId IS NOT NULL RETURN a.id ORDER BY a.id'),stmt('MATCH (a:Article)-[:HAS_ENTITY]->(:Person {id:"Jimmy Carter"}) WHERE a.neo4jImportId IS NOT NULL RETURN a.id ORDER BY a.id')])
 counts=[x['data'] for x in results]
 assert counts[0][0]['row']==[26] and counts[1][0]['row']==[47],counts
 assert {x['row'][0] for x in counts[2]}=={'1976-6','1976-8','1976-22'},counts
 assert len(counts[3])==3,counts
+foreign=query([stmt('MATCH (n) WHERE n.neo4jImportId IS NULL RETURN count(n)')])[0]['data'][0]['row'][0]
 print('Verified: 26 nodes, 47 relationships, 3 articles, all connected to Jimmy Carter.')
+if foreign:print(f'Note: {foreign} unrelated nodes from the course exercises are also present in this database.')
