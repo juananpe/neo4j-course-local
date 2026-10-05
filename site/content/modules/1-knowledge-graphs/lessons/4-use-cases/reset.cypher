@@ -1,1 +1,0 @@
-MATCH (n) WHERE n.neo4jImportId IS NOT NULL DETACH DELETE n;

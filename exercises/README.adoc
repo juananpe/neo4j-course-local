@@ -1,5 +1,0 @@
-= Constructing Knowledge Graphs with LLMs
-
-This repository accompanies the link:https://graphacademy.neo4j.com/courses/llm-knowledge-graph-construction[Constructing Knowledge Graphs with LLMs^] on link:https://graphacademy.neo4j.com/courses/llm-knowledge-graph-construction[GraphAcademy^].
-
-For a complete walkthrough of this repository, link:https://graphacademy.neo4j.com/courses/llm-knowledge-graph-construction[enrol now^].
